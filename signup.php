@@ -26,8 +26,8 @@
     $_SESSION["usertype"] = "";
 
     // Set the new timezone
-    date_default_timezone_set('America/Bogota');
-    $date = date('Y-m-d');
+    date_default_timezone_set('America/Guatemala');
+    $date = date('d-m-y');
 
     $_SESSION["date"] = $date;
 
@@ -58,7 +58,7 @@
             <table border="0">
                 <tr>
                     <td colspan="2">
-                        <p class="header-text">Empecemos acá</p>
+                        <p class="header-text">Empecemos</p>
                         <p class="sub-text">Agregue sus datos personales para continuar</p>
                     </td>
                 </tr>

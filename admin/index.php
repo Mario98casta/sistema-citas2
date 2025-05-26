@@ -155,7 +155,7 @@
                     </p>
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
-                        date_default_timezone_set('America/Bogota');
+                        date_default_timezone_set('America/Gautemala');
 
                         $today = date('Y-m-d');
                         echo $today;
@@ -311,7 +311,7 @@
                                             <tbody>
 
                                                 <?php
-                                                $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                                $nextweek = date("d-m-y", strtotime("+1 week"));
                                                 $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today'  and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
 
                                                 $result = $database->query($sqlmain);
