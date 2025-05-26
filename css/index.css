@@ -1,5 +1,5 @@
 body{
-    background-image: url(../img/bgp1.jpg);
+    background-image: url(../img/bg01.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -25,7 +25,7 @@ table{
     
 }
 .heading-text{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-size: 42px;
     font-weight: 700;
     line-height: 63px;
@@ -35,7 +35,7 @@ table{
 }
 
 .sub-text2{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-size: 17px;
     line-height: 27px;
     font-weight: 400;
@@ -60,24 +60,30 @@ table{
 }
 
 .edoc-logo-sub{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-size: 12px;
 
 }
 
 
-.nav-item{
-    color: rgb(255, 255, 255);
-    text-decoration-color: aqua;
-    text-align: center;
+.nav-item {
+    background-color: rgb(1, 81, 151);
+    color: #fdfdfd;
+    border: 1px solid rgb(1, 81, 151);
+    border-radius: 4px;
+    padding: 6px 18px;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
     animation: transitionIn-Y-over 0.5s;
+    text-decoration: none;
 }
 
-.nav-item:hover{
-    color: #f0f0f0;
-    text-decoration-color: aqua;
+.nav-item:hover {
+    background-color: #345dc4b6;
+    color: #ffffff;
+    border-color: #345dc4b7;
 }
 
 .footer-hashen{
