@@ -31,7 +31,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+    //session start
 
     session_start();
 
@@ -178,7 +178,7 @@
                         ?>
                     </p>
                 </td>
-                <td width="10%">
+                <td width="1%">
                     <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                 </td>
 
@@ -290,7 +290,7 @@
                         <tr>
                             <td width="50%">
                                 <center>
-                                    <div class="abc scroll" style="height: 200px;">
+                                    <div class="abc scroll" style="height: 250px;">
                                         <table width="85%" class="sub-table scrolldown" border="0">
                                             <thead>
                                                 <tr>
@@ -332,7 +332,7 @@
                                                     <img src="../img/notfound.svg" width="25%">
                                                     
                                                     <br>
-                                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We  couldnt find anything related to your keywords !</p>
+                                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">No encontramos resultados.</p>
                                                     <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Mostrar todas las Citas &nbsp;</font></button>
                                                     </a>
                                                     </center>
@@ -387,7 +387,7 @@
                             </td>
                             <td width="50%" style="padding: 0;">
                                 <center>
-                                    <div class="abc scroll" style="height: 200px;padding: 0;margin: 0;">
+                                    <div class="abc scroll" style="height: 250px;padding: 0;margin: 0;">
                                         <table width="85%" class="sub-table scrolldown" border="0">
                                             <thead>
                                                 <tr>
@@ -424,7 +424,7 @@
                                                     <img src="../img/notfound.svg" width="25%">
                                                     
                                                     <br>
-                                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We  couldnt find anything related to your keywords !</p>
+                                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">No encontramos resultados</p>
                                                     <a class="non-style-link" href="schedule.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Mostrar todas las Sesiones &nbsp;</font></button>
                                                     </a>
                                                     </center>

@@ -152,9 +152,9 @@
                     </p>
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
-                        date_default_timezone_set('America/Bogota');
+                        date_default_timezone_set('America/Guatemala');
 
-                        $today = date('Y-m-d');
+                        $today = date('d-m-y');
                         echo $today;
 
 
@@ -180,8 +180,8 @@
                         <table class="filter-container doctor-header" style="border: none;width:95%" border="0">
                             <tr>
                                 <td>
-                                    <h3>Hola de nuevo!</h3>
-                                    <h1><?php echo $username  ?>.</h1>
+                                    <h3>bienvenido</h3>
+                                    <h1>doc: <?php echo $username  ?></h1>
                                     <p>Gracias por unirte a nosotros. Siempre estamos tratando de brindarle un servicio completo.<br>
                                         ¡Puede ver su horario diario, llegar a la cita de los pacientes en casa!<br><br>
                                     </p>

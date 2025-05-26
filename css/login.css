@@ -1,7 +1,9 @@
 
 body{
     margin: 7%;
-    background-color: #fd0000;
+    background-image: url(../img/bg01.jpg);
+     max-height: 100vh;
+    height: 100vh;
 }
 
 

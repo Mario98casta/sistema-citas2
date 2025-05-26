@@ -25,22 +25,27 @@
 <body>
     <?php
 
-    //learn from w3schools.com
 
     session_start();
 
     if (isset($_SESSION["user"])) {
         if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'admin') {
             header("location: ../login.php");
+        }else {
+            $useremail = $_SESSION["user"];
         }
     } else {
         header("location: ../login.php");
     }
 
 
-
     //import database
     include("../connection.php");
+    $userrow = $database->query("select * from admin where aemail='$useremail'");
+    $userfetch = $userrow->fetch_assoc();
+    $userid = $userfetch["adminid"];
+    $username = $userfetch["aname"];
+
 
 
     ?>
@@ -55,8 +60,8 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title">ConfiguroWeb</p>
-                                    <p class="profile-subtitle">configuroweb.com</p>
+                                    <p class="profile-title"><?php echo substr($username, 0, 13)  ?></p>
+                                    <p class="profile-subtitle"><?php echo substr($useremail, 0, 22)?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -133,9 +138,9 @@
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
 
-                        date_default_timezone_set('America/Bogota');
+                        date_default_timezone_set('America/Guatemala');
 
-                        $today = date('Y-m-d');
+                        $today = date('d-m-y');
                         echo $today;
 
                         $list110 = $database->query("select  * from  appointment;");
@@ -150,15 +155,7 @@
 
             </tr>
 
-            <!-- <tr>
-                    <td colspan="4" >
-                        <div style="display: flex;margin-top: 40px;">
-                        <div class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49);margin-top: 5px;">Calendario de Sesión</div>
-                        <a href="?action=add-session&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="margin-left:25px;background-image: url('../img/icons/add.svg');">Agregar a Sesión</font></button>
-                        </a>
-                        </div>
-                    </td>
-                </tr> -->
+
             <tr>
                 <td colspan="4" style="padding-top:10px;width: 100%;">
 
@@ -221,7 +218,7 @@
 
             <?php
             if ($_POST) {
-                //print_r($_POST);
+                //echo "post";
                 $sqlpt1 = "";
                 if (!empty($_POST["sheduledate"])) {
                     $sheduledate = $_POST["sheduledate"];
@@ -249,9 +246,6 @@
                 };
                 //echo $sqlmain;
 
-
-
-                //
             } else {
                 $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
             }

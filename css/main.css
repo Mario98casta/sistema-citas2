@@ -27,7 +27,7 @@ body{
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #fd7d1c; 
+    background-image: url(../img/bg01.jpg);
   }
    
   /* Handle */

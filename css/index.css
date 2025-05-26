@@ -1,5 +1,5 @@
 body{
-    background-image: url(../img/bg01.jpg);
+    background-image: url(../img/bgp1.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -12,7 +12,7 @@ html, body {
   }
   
 .full-height {
-    background: rgba(26, 26, 26, 0.548);
+    background: rgba(255, 255, 255, 0.13);
     background-attachment: fixed;
     max-height: 100vh;
     height: 100vh;
@@ -25,7 +25,7 @@ table{
     
 }
 .heading-text{
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 42px;
     font-weight: 700;
     line-height: 63px;
@@ -35,7 +35,7 @@ table{
 }
 
 .sub-text2{
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255, 255, 255);
     font-size: 17px;
     line-height: 27px;
     font-weight: 400;
@@ -45,8 +45,9 @@ table{
 
 
 .register-btn{
-    background-color: rgba(240, 248, 255, 0.589);
+    background-color: rgb(240, 248, 255);
     color: #345cc4;
+    border-color: rgb(255, 255, 255);
 }
 
 
@@ -59,23 +60,24 @@ table{
 }
 
 .edoc-logo-sub{
-    color: rgba(255, 255, 255, 0.733);
+    color: rgb(255, 255, 255);
     font-size: 12px;
 
 }
 
 
 .nav-item{
-    color: rgba(255, 255, 255, 0.671);
+    color: rgb(255, 255, 255);
+    text-decoration-color: aqua;
     text-align: center;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 500;
     animation: transitionIn-Y-over 0.5s;
 }
 
 .nav-item:hover{
     color: #f0f0f0;
-
+    text-decoration-color: aqua;
 }
 
 .footer-hashen{

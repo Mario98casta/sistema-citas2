@@ -1,7 +1,12 @@
 
 body{
-    margin: 2%;
-    background-color: #dd0404;
+     margin: 7%;
+    background-image: url(../img/bg01.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+     max-height: 100vh;
+    height: 100vh;
 }
 .container{
     width: 45%;

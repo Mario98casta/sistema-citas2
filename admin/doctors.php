@@ -25,22 +25,26 @@
 <body>
     <?php
 
-    //learn from w3schools.com
 
     session_start();
 
     if (isset($_SESSION["user"])) {
         if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'admin') {
             header("location: ../login.php");
+        } else {
+            $useremail = $_SESSION["user"];
         }
     } else {
         header("location: ../login.php");
     }
 
 
-
     //import database
     include("../connection.php");
+    $userrow = $database->query("select * from admin where aemail='$useremail'");
+    $userfetch = $userrow->fetch_assoc();
+    $userid = $userfetch["adminid"];
+    $username = $userfetch["aname"];
 
 
     ?>
@@ -55,13 +59,14 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title">ConfiguroWeb</p>
-                                    <p class="profile-subtitle">configuroweb.com</p>
+                                    <p class="profile-title"><?php echo substr($username, 0, 13) ?></p>
+                                    <p class="profile-subtitle"><?php echo substr($useremail, 0, 22) ?></p>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="../logout.php"><input type="button" value="Cerrar Sesión" class="logout-btn btn-primary-soft btn"></a>
+                                    <a href="../logout.php"><input type="button" value="Cerrar Sesión"
+                                            class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                         </table>
@@ -118,7 +123,8 @@
         <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
             <tr>
                 <td width="13%">
-                    <a href="index.php"><button class="login-btn btn-primary-soft btn btn-icon-back" style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px">
+                    <a href="index.php"><button class="login-btn btn-primary-soft btn btn-icon-back"
+                            style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px">
                             <font class="tn-in-text">Volver</font>
                         </button></a>
                 </td>
@@ -126,7 +132,8 @@
 
                     <form action="" method="post" class="header-search">
 
-                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Búsqueda por Nombre, Doctor o Correo" list="doctors">&nbsp;&nbsp;
+                        <input type="search" name="search" class="input-text header-searchbar"
+                            placeholder="Búsqueda por Nombre, Doctor o Correo" list="doctors">&nbsp;&nbsp;
 
                         <?php
                         echo '<datalist id="doctors">';
@@ -138,13 +145,15 @@
                             $c = $row00["docemail"];
                             echo "<option value='$d'><br/>";
                             echo "<option value='$c'><br/>";
-                        };
+                        }
+                        ;
 
                         echo ' </datalist>';
                         ?>
 
 
-                        <input type="Submit" value="Búsqueda" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+                        <input type="Submit" value="Búsqueda" class="login-btn btn-primary btn"
+                            style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
 
                     </form>
 
@@ -155,15 +164,16 @@
                     </p>
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
-                        date_default_timezone_set('America/Bogota');
+                        date_default_timezone_set('America/Guatemala');
 
-                        $date = date('Y-m-d');
+                        $date = date('d-m-y');
                         echo $date;
                         ?>
                     </p>
                 </td>
                 <td width="10%">
-                    <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                    <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img
+                            src="../img/calendar.svg" width="100%"></button>
                 </td>
 
 
@@ -171,16 +181,21 @@
 
             <tr>
                 <td colspan="2" style="padding-top:30px;">
-                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Agregar Nuevo Doctor</p>
+                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Agregar
+                        Nuevo Doctor</p>
                 </td>
                 <td colspan="2">
-                    <a href="?action=add&id=none&error=0" class="non-style-link"><button class="login-btn btn-primary btn button-icon" style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Agregar Nuevo</font></button>
+                    <a href="?action=add&id=none&error=0" class="non-style-link"><button
+                            class="login-btn btn-primary btn button-icon"
+                            style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Agregar
+                            Nuevo</font></button>
                     </a>
                 </td>
             </tr>
             <tr>
                 <td colspan="4" style="padding-top:10px;">
-                    <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Doctores (<?php echo $list11->num_rows; ?>)</p>
+                    <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Doctores
+                        (<?php echo $list11->num_rows; ?>)</p>
                 </td>
 
             </tr>
@@ -514,12 +529,13 @@
                     $sn = $row00["sname"];
                     $id00 = $row00["id"];
                     echo "<option value=" . $id00 . ">$sn</option><br/>";
-                };
+                }
+                ;
 
 
 
 
-                echo     '       </select><br>
+                echo '       </select><br>
                                 </td>
                             </tr>
                             <tr>
@@ -694,12 +710,13 @@
                     $sn = $row00["sname"];
                     $id00 = $row00["id"];
                     echo "<option value=" . $id00 . ">$sn</option><br/>";
-                };
+                }
+                ;
 
 
 
 
-                echo     '       </select><br><br>
+                echo '       </select><br><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -764,9 +781,12 @@
                 </div>
                 </div>
     ';
-            };
-        };
-    };
+            }
+            ;
+        }
+        ;
+    }
+    ;
 
     ?>
     </div>
