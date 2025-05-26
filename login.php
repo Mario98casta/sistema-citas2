@@ -42,51 +42,67 @@
 
 
     if ($_POST) {
-
         $email = $_POST['useremail'];
         $password = $_POST['userpassword'];
-
         $error = '<label for="promter" class="form-label"></label>';
 
-        $result = $database->query("select * from webuser where email='$email'");
-        if ($result->num_rows == 1) {
-            $utype = $result->fetch_assoc()['usertype'];
+        $result = $database->prepare("SELECT * FROM webuser WHERE email = ?");
+        $result->bind_param("s", $email);
+        $result->execute();
+        $userResult = $result->get_result();
+        if ($userResult->num_rows == 1) {
+            $utype = $userResult->fetch_assoc()['usertype'];
             if ($utype == 'patient') {
-                $checker = $database->query("select * from patient where pemail='$email' and ppassword='$password'");
+                $stmt = $database->prepare("SELECT * FROM patient WHERE pemail = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $checker = $stmt->get_result();
                 if ($checker->num_rows == 1) {
-
-
-                    //   Patient dashbord
-                    $_SESSION['user'] = $email;
-                    $_SESSION['usertype'] = 'patient';
-
-                    header(header: 'location: patient/index.php');
-                    
+                    $row = $checker->fetch_assoc();
+                    if (password_verify($password, $row['ppassword'])) {
+                        $_SESSION['user'] = $email;
+                        $_SESSION['usertype'] = 'patient';
+                        header('location: patient/index.php');
+                        exit();
+                    } else {
+                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
+                    }
                 } else {
                     $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
                 }
             } elseif ($utype == 'admin') {
-                $checker = $database->query("select * from admin where aemail='$email' and apassword='$password'");
+                $stmt = $database->prepare("SELECT * FROM admin WHERE aemail = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $checker = $stmt->get_result();
                 if ($checker->num_rows == 1) {
-
-
-                    //   Admin dashbord
-                    $_SESSION['user'] = $email;
-                    $_SESSION['usertype'] = 'admin';
-
-                    header('location: admin/index.php');
+                    $row = $checker->fetch_assoc();
+                    if (password_verify($password, $row['apassword'])) {
+                        $_SESSION['user'] = $email;
+                        $_SESSION['usertype'] = 'admin';
+                        header('location: admin/index.php');
+                        exit();
+                    } else {
+                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
+                    }
                 } else {
                     $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
                 }
             } elseif ($utype == 'doctor') {
-                $checker = $database->query("select * from doctor where docemail='$email' and docpassword='$password'");
+                $stmt = $database->prepare("SELECT * FROM doctor WHERE docemail = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $checker = $stmt->get_result();
                 if ($checker->num_rows == 1) {
-
-
-                    //   doctor dashbord
-                    $_SESSION['user'] = $email;
-                    $_SESSION['usertype'] = 'doctor';
-                    header('location: doctor/index.php');
+                    $row = $checker->fetch_assoc();
+                    if (password_verify($password, $row['docpassword'])) {
+                        $_SESSION['user'] = $email;
+                        $_SESSION['usertype'] = 'doctor';
+                        header('location: doctor/index.php');
+                        exit();
+                    } else {
+                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
+                    }
                 } else {
                     $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Credenciales incorrectas: correo electrónico o contraseña no válidos</label>';
                 }
