@@ -369,7 +369,6 @@ input[type=search]:focus {
   background-image: url('../img/icons/dashboard.svg');
 }
 
-
 .menu-icon-doctor{
   background-image: url('../img/icons/doctors.svg');
 }
@@ -394,13 +393,11 @@ input[type=search]:focus {
 }
 
 
-
 .menu-icon-dashbord:hover,.menu-icon-dashbord-active{
   color: var(--primarycolor);
 
   background-image: url('../img/icons/dashboard-hover.svg');
 }
-
 
 .menu-icon-doctor:hover,.menu-icon-doctor-active{
   color: var(--primarycolor);
@@ -438,9 +435,6 @@ input[type=search]:focus {
   
   background-image: url('../img/icons/home-iceblue.svg');
 }
-
-
-
 
 
 .btn-icon-back{
@@ -484,8 +478,6 @@ input[type=search]:focus {
 .btn-filter:hover{
   background-image: url('../img/icons/filter-white.svg');
 }
-
-
 
 
 .dashboard-items{

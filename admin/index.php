@@ -38,6 +38,8 @@
     if (isset($_SESSION["user"])) {
         if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'admin') {
             header("location: ../login.php");
+        }else {
+            $useremail = $_SESSION["user"];
         }
     } else {
         header("location: ../login.php");
@@ -46,6 +48,12 @@
 
     //import database
     include("../connection.php");
+    $userrow = $database->query("select * from admin where aemail='$useremail'");
+    $userfetch = $userrow->fetch_assoc();
+    $userid = $userfetch["adminid"];
+    $username = $userfetch["aname"];
+
+
 
 
     ?>
@@ -60,8 +68,8 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title">ConfiguroWeb</p>
-                                    <p class="profile-subtitle">configuroweb.com</p>
+                                    <p class="profile-title"><?php echo substr($username, 0, 13)  ?></p>
+                                    <p class="profile-subtitle"><?php echo substr($useremail, 0, 22)?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -155,9 +163,9 @@
                     </p>
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
-                        date_default_timezone_set('America/Gautemala');
+                        date_default_timezone_set('America/Guatemala');
 
-                        $today = date('Y-m-d');
+                        $today = date('d-m-y');
                         echo $today;
 
 
@@ -263,7 +271,7 @@
                                 </p>
                                 <p style="padding-bottom:19px;padding-left:50px;font-size:15px;font-weight:500;color:#212529e3;line-height: 20px;">
                                     Aquí está el acceso rápido a las próximas citas hasta 7 días<br>
-                                    Más detalles disponibles en la sección de @Citas.
+                                    Más detalles disponibles en la sección de Citas.
                                 </p>
 
                             </td>
@@ -275,7 +283,7 @@
                                 </p>
                                 <p style="padding-bottom:19px;text-align:right;padding-right:50px;font-size:15px;font-weight:500;color:#212529e3;line-height: 20px;">
                                     Aquí hay acceso rápido a las próximas sesiones programadas hasta 7 días<br>
-                                    Agregar, quitar y muchas funciones disponibles en la sección @Calendario.
+                                    Agregar, quitar y muchas funciones disponibles en la sección Calendario.
                                 </p>
                             </td>
                         </tr>
@@ -404,7 +412,7 @@
                                             <tbody>
 
                                                 <?php
-                                                $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                                $nextweek = date("d-m-y", strtotime("+1 week"));
                                                 $sqlmain = "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
                                                 $result = $database->query($sqlmain);
 
