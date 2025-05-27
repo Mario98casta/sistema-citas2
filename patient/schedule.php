@@ -51,9 +51,9 @@
     //echo $userid;
     //echo $username;
 
-    date_default_timezone_set('America/Bogota');
+    date_default_timezone_set('America/Guatemala');
 
-    $today = date('Y-m-d');
+    $today = date('y-m-d');
 
 
     //echo $userid;
@@ -166,7 +166,7 @@
                 <td>
                     <form action="" method="post" class="header-search">
 
-                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Búsqueda por Nombre, Doctor o Correo or Date (YYYY-MM-DD)" list="doctors" value="<?php echo $insertkey ?>">&nbsp;&nbsp;
+                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Búsqueda por Nombre, Doctor o Correo or Date (DD-MM-YYYY)" list="doctors" value="<?php echo $insertkey ?>">&nbsp;&nbsp;
 
                         <?php
                         echo '<datalist id="doctors">';

@@ -147,9 +147,9 @@
                     </p>
                     <p class="heading-sub12" style="padding: 0;margin: 0;">
                         <?php
-                        date_default_timezone_set('America/Bogota');
+                        date_default_timezone_set('America/Guatemala');
 
-                        $today = date('Y-m-d');
+                        $today = date('d-m-y');
                         echo $today;
 
 

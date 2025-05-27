@@ -51,9 +51,9 @@
 
 
 
-    date_default_timezone_set('America/Bogota');
+    date_default_timezone_set('America/Guatemala');
 
-    $today = date('Y-m-d');
+    $today = date('y-m-d');
 
 
     //echo $userid;
@@ -140,7 +140,7 @@
                 <td>
                     <form action="schedule.php" method="post" class="header-search">
 
-                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Búsqueda Doctor, Nombre, Correo, Fecha (YYYY-MM-DD)" list="doctors">&nbsp;&nbsp;
+                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Búsqueda Doctor, Nombre, Correo, Fecha (DD-MM-YYYY)" list="doctors">&nbsp;&nbsp;
 
                         <?php
                         echo '<datalist id="doctors">';
@@ -235,12 +235,17 @@
                                             $docemail = $row["docemail"];
                                             $scheduledate = $row["scheduledate"];
                                             $scheduletime = $row["scheduletime"];
+                                            $nop = isset($row["nop"]) ? (int)$row["nop"] : 0; // Obtener el número máximo de pacientes
                                             $sql2 = "select * from appointment where scheduleid=$id";
                                             //echo $sql2;
                                             $result12 = $database->query($sql2);
                                             $apponum = ($result12->num_rows) + 1;
 
-                                            echo '
+                                            if ($apponum > $nop && $nop > 0) {
+                                                // Si ya no hay cupos disponibles
+                                                echo '<td colspan="2"><div class="dashboard-items search-items" style="text-align:center; padding:40px; color:red; font-size:20px;">No hay cupos disponibles para esta cita.</div></td>';
+                                            } else {
+                                                echo '
                                         <form action="booking-complete.php" method="post">
                                             <input type="hidden" name="scheduleid" value="' . $scheduleid . '" >
                                             <input type="hidden" name="apponum" value="' . $apponum . '" >
@@ -251,64 +256,50 @@
                                     ';
 
 
-                                            echo '
-                                    <td style="width: 50%;" rowspan="2">
-                                            <div  class="dashboard-items search-items"  >
-                                            
-                                                <div style="width:100%">
-                                                        <div class="h1-search" style="font-size:25px;">
-                                                            Información Citas
-                                                        </div><br><br>
-                                                        <div class="h3-search" style="font-size:18px;line-height:30px">
-                                                            Nombre Doctor:  &nbsp;&nbsp;<b>' . $docname . '</b><br>
-                                                            Correo Doctor:  &nbsp;&nbsp;<b>' . $docemail . '</b> 
-                                                        </div>
-                                                        <div class="h3-search" style="font-size:18px;">
-                                                          
-                                                        </div><br>
-                                                        <div class="h3-search" style="font-size:18px;">
-                                                            Título Cita: ' . $title . '<br>
-                                                            Fecha programada de la sesión: ' . $scheduledate . '<br>
-                                                            Cita Empieza: ' . $scheduletime . '<br>
-                                                            
-
-                                                        </div>
-                                                        <br>
-                                                        
-                                                </div>
-                                                        
-                                            </div>
-                                        </td>
-                                        
-                                        
-                                        
-                                        <td style="width: 25%;">
-                                            <div  class="dashboard-items search-items"  >
-                                            
-                                                <div style="width:100%;padding-top: 15px;padding-bottom: 15px;">
-                                                        <div class="h1-search" style="font-size:20px;line-height: 35px;margin-left:8px;text-align:center;">
-                                                        Tu número de cita
-                                                        </div>
-                                                        <center>
-                                                        <div class=" dashboard-icons" style="margin-left: 0px;width:90%;font-size:70px;font-weight:800;text-align:center;color:var(--btnnictext);background-color: var(--btnice)">' . $apponum . '</div>
-                                                    </center>
-                                                       
-                                                        </div><br>
-                                                        
-                                                        <br>
-                                                        <br>
-                                                </div>
-                                                        
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="Submit" class="login-btn btn-primary btn btn-book" style="margin-left:10px;padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;width:95%;text-align: center;" value="Reserva ya" name="booknow"></button>
-                                            </form>
-                                            </td>
-                                        </tr>
-                                        ';
+                                                // ...resto del código para mostrar la información y el botón de reserva...
+                                                echo '
+<td style="width: 50%;" rowspan="2">
+    <div  class="dashboard-items search-items"  >
+        <div style="width:100%">
+            <div class="h1-search" style="font-size:25px;">
+                Información Citas
+            </div><br><br>
+            <div class="h3-search" style="font-size:18px;line-height:30px">
+                Nombre Doctor:  &nbsp;&nbsp;<b>' . $docname . '</b><br>
+                Correo Doctor:  &nbsp;&nbsp;<b>' . $docemail . '</b> 
+            </div>
+            <div class="h3-search" style="font-size:18px;">
+            </div><br>
+            <div class="h3-search" style="font-size:18px;">
+                Título Cita: ' . $title . '<br>
+                Fecha programada de la sesión: ' . $scheduledate . '<br>
+                Cita Empieza: ' . $scheduletime . '<br>
+            </div>
+            <br>
+        </div>
+    </div>
+</td>
+<td style="width: 25%;">
+    <div  class="dashboard-items search-items"  >
+        <div style="width:100%;padding-top: 15px;padding-bottom: 15px;">
+            <div class="h1-search" style="font-size:20px;line-height: 35px;margin-left:8px;text-align:center;">
+                Tu número de cita
+            </div>
+            <center>
+                <div class=" dashboard-icons" style="margin-left: 0px;width:90%;font-size:70px;font-weight:800;text-align:center;color:var(--btnnictext);background-color: var(--btnice)">' . $apponum . '</div>
+            </center>
+        </div><br><br><br>
+    </div>
+</td>
+</tr>
+<tr>
+    <td>
+        <input type="Submit" class="login-btn btn-primary btn btn-book" style="margin-left:10px;padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;width:95%;text-align: center;" value="Reserva ya" name="booknow">
+    </form>
+    </td>
+</tr>
+';
+                                            }
                                         }
                                     }
 

@@ -29,7 +29,7 @@
     session_start();
 
     if (isset($_SESSION["user"])) {
-        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'doctor') {
+        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'patient') {
             header("location: ../login.php");
         } else {
             $useremail = $_SESSION["user"];
