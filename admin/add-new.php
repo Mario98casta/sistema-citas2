@@ -34,7 +34,7 @@
     //import database
     include("../connection.php");
 
-
+//prueba de rama
 
     if($_POST){
         $result= $database->query("select * from webuser");
