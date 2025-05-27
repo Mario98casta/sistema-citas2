@@ -13,14 +13,10 @@
     
     
     if($_GET){
-        //import database
-        include("../connection.php");
+         include("../connection.php");
         $id=$_GET["id"];
-        //$result001= $database->query("select * from schedule where scheduleid=$id;");
-        //$email=($result001->fetch_assoc())["docemail"];
-        $sql= $database->query("delete from appointment where appoid='$id';");
-        //$sql= $database->query("delete from doctor where docemail='$email';");
-        //print_r($email);
+        // Cambiar estado a 'cancelada' en vez de borrar
+        $sql= $database->query("UPDATE appointment SET appostatus='cancelada' WHERE appoid='$id';");
         header("location: appointment.php");
     }
 

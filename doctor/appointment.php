@@ -1,3 +1,69 @@
+<?php
+session_start();
+if (isset($_SESSION["user"])) {
+    if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'doctor') {
+        header("location: ../login.php");
+        exit();
+    } else {
+        $useremail = $_SESSION["user"];
+    }
+} else {
+    header("location: ../login.php");
+    exit();
+}
+
+include("../connection.php");
+if (isset($_GET['action']) && $_GET['action'] === 'attend' && isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $database->query("UPDATE appointment SET appostatus='atendida' WHERE appoid='$id'");
+    header('Location: appointment.php');
+    exit();
+}
+if (isset($_GET['action']) && $_GET['action'] === 'reschedule' && isset($_GET['id'])) {
+    $id = $_GET['id'];
+    // Obtener fecha y hora actuales
+    $res = $database->query("SELECT schedule.scheduledate, schedule.scheduletime FROM appointment INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid WHERE appointment.appoid='$id'");
+    $row = $res->fetch_assoc();
+    $fecha_actual = $row['scheduledate'];
+    $hora_actual = $row['scheduletime'];
+    echo '<div id="popup1" class="overlay">
+        <div class="popup">
+            <center>
+                <h2>Reagendar Cita</h2>
+                <a class="close" href="appointment.php">&times;</a>
+                <div class="content">
+                    <form action="appointment.php" method="POST">
+                        <input type="hidden" name="reschedule_id" value="' . $id . '">
+                        <label>Fecha nueva:</label><br>
+                        <input type="date" name="new_date" class="input-text" value="' . $fecha_actual . '" required><br><br>
+                        <label>Hora nueva:</label><br>
+                        <input type="time" name="new_time" class="input-text" value="' . $hora_actual . '" required><br><br>
+                        <input type="submit" name="reschedule_submit" value="Guardar Cambios" class="btn-primary btn">
+                    </form>
+                </div>
+            </center>
+        </div>
+    </div>';
+}
+if (isset($_POST['reschedule_submit'])) {
+    $appoid = $_POST['reschedule_id'];
+    $new_date = $_POST['new_date'];
+    $new_time = $_POST['new_time'];
+    // Buscar el scheduleid de la cita
+    $res = $database->query("SELECT scheduleid, appostatus FROM appointment WHERE appoid='$appoid'");
+    $row = $res->fetch_assoc();
+    $scheduleid = $row['scheduleid'];
+    // Actualizar la fecha y hora en schedule
+    $database->query("UPDATE schedule SET scheduledate='$new_date', scheduletime='$new_time' WHERE scheduleid='$scheduleid'");
+    // Cambiar estado a 'reagendada' y actualizar appodate
+    $database->query("UPDATE appointment SET appostatus='reagendada', appodate='$new_date' WHERE appoid='$appoid'");
+    // Programar cambio a 'pendiente' en 5 minutos usando un EVENT de MySQL
+    $database->query("CREATE EVENT IF NOT EXISTS set_pending_$appoid ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 MINUTE DO UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid' AND appostatus='reagendada';");
+    header('Location: appointment.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,16 +76,7 @@
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="icon" type="image/png" sizes="16x16" href="../img/logo.png">
 
-    <title>Citas</title>
-    <style>
-        .popup {
-            animation: transitionIn-Y-bottom 0.5s;
-        }
-
-        .sub-table {
-            animation: transitionIn-Y-bottom 0.5s;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -174,7 +231,7 @@
             <tr>
                 <td colspan="4" style="padding-top:0px;width: 100%;">
                     <center>
-                        <table class="filter-container" border="0">
+                        <table class="filter-container responsive-table" border="0">
                             <tr>
                                 <td width="10%">
 
@@ -231,7 +288,7 @@
                 <td colspan="4">
                     <center>
                         <div class="abc scroll">
-                            <table width="93%" class="sub-table scrolldown" border="0">
+                            <table width="93%" class="sub-table scrolldown responsive-table" border="0">
                                 <thead>
                                     <tr>
                                         <th class="table-headin">
@@ -302,35 +359,72 @@
                                             $pname = $row["pname"];
                                             $apponum = $row["apponum"];
                                             $appodate = $row["appodate"];
-                                            echo '<tr >
-                                        <td style="font-weight:600;"> &nbsp;' .
+        echo '<tr >
+    <td style="font-weight:600;"> &nbsp;' .
+            substr($pname, 0, 25)
+            . '</td >
+    <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
+    ' . $apponum . '
+    
+    </td>
+    <td>
+    ' . substr($title, 0, 15) . '
+    </td>
+    <td style="text-align:center;;">
+        ' . substr($scheduledate, 0, 10) . ' @' . substr($scheduletime, 0, 5) . '
+    </td>
+    
+    <td style="text-align:center;">
+        ' . $appodate . '
+    </td>';
 
-                                                substr($pname, 0, 25)
-                                                . '</td >
-                                        <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
-                                        ' . $apponum . '
-                                        
-                                        </td>
-                                        <td>
-                                        ' . substr($title, 0, 15) . '
-                                        </td>
-                                        <td style="text-align:center;;">
-                                            ' . substr($scheduledate, 0, 10) . ' @' . substr($scheduletime, 0, 5) . '
-                                        </td>
-                                        
-                                        <td style="text-align:center;">
-                                            ' . $appodate . '
-                                        </td>
+        // Obtener el estado actual de la cita
+        $status_query = $database->query("SELECT appostatus FROM appointment WHERE appoid='$appoid'");
+        $status_row = $status_query->fetch_assoc();
+        $appostatus = isset($status_row['appostatus']) ? strtolower($status_row['appostatus']) : 'pendiente';
+        $estado = '';
+        switch ($appostatus) {
+            case 'atendida':
+                $estado = 'Atendida';
+                break;
+            case 'cancelada':
+                $estado = 'Cancelada';
+                break;
+            case 'reagendada':
+                $estado = 'Reagendada';
+                break;
+            default:
+                $estado = ucfirst($appostatus);
+                break;
+        }
 
-                                        <td>
-                                        <div style="display:flex;justify-content: center;">
-                                        
-                                        <!--<a href="?action=view&id=' . $appoid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Ver</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;-->
-                                       <a href="?action=drop&id=' . $appoid . '&name=' . $pname . '&session=' . $title . '&apponum=' . $apponum . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancelar</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;</div>
-                                        </td>
-                                    </tr>';
+        echo '<td style="text-align:center;">' . $estado . '</td><td><div class="responsive-btns">';
+        if ($appostatus === 'atendida') {
+            echo '<button class="btn-primary-soft btn button-icon" style="background:#b2e0b2;color:#2d6a2d;cursor:default;opacity:0.7;min-width:120px;" disabled><font class="tn-in-text">Atendida</font></button>';
+        } elseif ($appostatus === 'cancelada') {
+            echo '<a href="?action=reschedule&id=' . $appoid . '" class="non-style-link">
+                    <button class="btn-primary-soft btn button-icon btn-edit" style="background:#ffe066;color:#856404;min-width:120px;">
+                        <font class="tn-in-text">Reagendar</font>
+                    </button>
+                </a>';
+        } else {
+            echo '<a href="?action=attend&id=' . $appoid . '" class="non-style-link">
+                    <button class="btn-primary-soft btn button-icon" style="background:#4f8cff;color:white;min-width:120px;">
+                        <font class="tn-in-text">Atender</font>
+                    </button>
+                </a>';
+            echo '<a href="?action=reschedule&id=' . $appoid . '" class="non-style-link">
+                    <button class="btn-primary-soft btn button-icon btn-edit" style="background:#ffe066;color:#856404;min-width:120px;">
+                        <font class="tn-in-text">Reagendar</font>
+                    </button>
+                </a>';
+            echo '<a href="?action=drop&id=' . $appoid . '&name=' . urlencode($pname) . '&session=' . urlencode($title) . '&apponum=' . urlencode($apponum) . '" class="non-style-link">
+                    <button class="btn-primary-soft btn button-icon btn-delete" style="background:#ff6b6b;color:white;min-width:120px;">
+                        <font class="tn-in-text">Cancelar</font>
+                    </button>
+                </a>';
+        }
+        echo '</div></td></tr>';
                                         }
                                     }
 
