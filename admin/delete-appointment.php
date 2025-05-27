@@ -16,7 +16,8 @@
         //import database
         include("../connection.php");
         $id=$_GET["id"];
-        $sql= $database->query("delete from appointment where appoid='$id';");
+        // Cambiar estado a 'cancelada' en vez de borrar
+        $sql= $database->query("UPDATE appointment SET appostatus='cancelada' WHERE appoid='$id';");
         header("location: appointment.php");
     }
 

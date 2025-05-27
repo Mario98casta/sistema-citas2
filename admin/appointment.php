@@ -233,7 +233,7 @@
                 }
                 //echo $sqlpt2;
                 //echo $sqlpt1;
-                $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid";
+                $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate,appointment.appostatus from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid";
                 $sqllist = array($sqlpt1, $sqlpt2);
                 $sqlkeywords = array(" where ", " and ");
                 $key2 = 0;
@@ -247,7 +247,7 @@
                 //echo $sqlmain;
 
             } else {
-                $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
+                $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate,appointment.appostatus from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
             }
 
 
@@ -292,7 +292,9 @@
                                             Fecha de la Cita
 
                                         </th>
-
+                                        <th class="table-headin">
+                                            Estado
+                                        </th>
                                         <th class="table-headin">
 
                                             Eventos
@@ -333,38 +335,38 @@
                                             $pname = $row["pname"];
                                             $apponum = $row["apponum"];
                                             $appodate = $row["appodate"];
+                                            $status = isset($row["appostatus"]) ? strtolower($row["appostatus"]) : "pendiente";
+                                            switch ($status) {
+                                                case "atendida":
+                                                    $estado = "Atendida";
+                                                    break;
+                                                case "reagendada":
+                                                    $estado = "Reagendada";
+                                                    break;
+                                                case "cancelada":
+                                                    $estado = "Cancelada";
+                                                    break;
+                                                case "pendiente":
+                                                    $estado = "Pendiente";
+                                                    break;
+                                                default:
+                                                    $estado = ucfirst($status);
+                                                    break;
+                                            }
+                                            $botones = '';
+                                            if ($status !== "atendida") {
+                                                $botones .= '<a href="?action=reschedule&id=' . $appoid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Reagendar</font></button></a>&nbsp;&nbsp;';
+                                                $botones .= '<a href="?action=drop&id=' . $appoid . '&name=' . $pname . '&session=' . $title . '&apponum=' . $apponum . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancelar</font></button></a>';
+                                            }
                                             echo '<tr >
-                                        <td style="font-weight:600;"> &nbsp;' .
-
-                                                substr($pname, 0, 25)
-                                                . '</td >
-                                        <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
-                                        ' . $apponum . '
-                                        
-                                        </td>
-                                        <td>
-                                        ' . substr($docname, 0, 25) . '
-                                        </td>
-                                        <td>
-                                        ' . substr($title, 0, 15) . '
-                                        </td>
-                                        <td style="text-align:center;font-size:12px;">
-                                            ' . substr($scheduledate, 0, 10) . ' <br>' . substr($scheduletime, 0, 5) . '
-                                        </td>
-                                        
-                                        <td style="text-align:center;">
-                                            ' . $appodate . '
-                                        </td>
-
-                                        <td>
-                                        <div style="display:flex;justify-content: center;">
-                                        
-                                        <!--<a href="?action=view&id=' . $appoid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Ver</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;-->
-                                       <a href="?action=drop&id=' . $appoid . '&name=' . $pname . '&session=' . $title . '&apponum=' . $apponum . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancelar</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;</div>
-                                        </td>
-                                    </tr>';
+    <td style="font-weight:600;"> &nbsp;' . substr($pname, 0, 25) . '</td >
+    <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">' . $apponum . '</td>
+    <td>' . substr($docname, 0, 25) . '</td>
+    <td>' . substr($title, 0, 15) . '</td>
+    <td style="text-align:center;font-size:12px;">' . substr($scheduledate, 0, 10) . ' <br>' . substr($scheduletime, 0, 5) . '</td>
+    <td style="text-align:center;">' . $appodate . '</td>
+    <td style="text-align:center;">' . $estado . '</td>
+    <td><div style="display:flex;justify-content: center;">' . $botones . '&nbsp;&nbsp;&nbsp;</div></td></tr>';
                                         }
                                     }
 
@@ -388,7 +390,32 @@
     if ($_GET) {
         $id = $_GET["id"];
         $action = $_GET["action"];
-        if ($action == 'add-session') {
+        if ($action == 'reschedule') {
+            // Obtener datos actuales de la cita
+            $res = $database->query("SELECT schedule.scheduledate, schedule.scheduletime FROM appointment INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid WHERE appointment.appoid='$id'");
+            $row = $res->fetch_assoc();
+            $fecha_actual = $row['scheduledate'];
+            $hora_actual = $row['scheduletime'];
+            echo '
+            <div id="popup1" class="overlay">
+                <div class="popup">
+                    <center>
+                        <h2>Reagendar Cita</h2>
+                        <a class="close" href="appointment.php">&times;</a>
+                        <div class="content">
+                            <form action="appointment.php" method="POST">
+                                <input type="hidden" name="reschedule_id" value="' . $id . '">
+                                <label>Fecha nueva:</label><br>
+                                <input type="date" name="new_date" class="input-text" value="' . $fecha_actual . '" required><br><br>
+                                <label>Hora nueva:</label><br>
+                                <input type="time" name="new_time" class="input-text" value="' . $hora_actual . '" required><br><br>
+                                <input type="submit" name="reschedule_submit" value="Guardar Cambios" class="btn-primary btn">
+                            </form>
+                        </div>
+                    </center>
+                </div>
+            </div>';
+        } elseif ($action == 'add-session') {
 
             echo '
             <div id="popup1" class="overlay">
@@ -652,6 +679,28 @@
         }
     }
 
+    if (isset($_POST['reschedule_submit'])) {
+        $appoid = $_POST['reschedule_id'];
+        $new_date = $_POST['new_date'];
+        $new_time = $_POST['new_time'];
+        // Buscar el scheduleid de la cita
+        $res = $database->query("SELECT scheduleid, appostatus FROM appointment WHERE appoid='$appoid'");
+        $row = $res->fetch_assoc();
+        $scheduleid = $row['scheduleid'];
+        $appostatus = $row['appostatus'];
+        // Actualizar la fecha y hora en schedule
+        $database->query("UPDATE schedule SET scheduledate='$new_date', scheduletime='$new_time' WHERE scheduleid='$scheduleid'");
+        // Si la cita estaba cancelada, poner en 'reagendada' y programar cambio a 'pendiente' en 5 minutos
+        if ($appostatus == 'cancelada') {
+            $database->query("UPDATE appointment SET appostatus='reagendada' WHERE appoid='$appoid'");
+            // Programar cambio a 'pendiente' en 5 minutos usando un trigger temporal
+            $database->query("CREATE EVENT IF NOT EXISTS set_pending_$appoid ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 MINUTE DO UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid' AND appostatus='reagendada';");
+        } else {
+            $database->query("UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid'");
+        }
+        echo '<script>window.location.href = "appointment.php";</script>';
+        exit();
+    }
     ?>
     </div>
 
