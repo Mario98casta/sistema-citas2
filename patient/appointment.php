@@ -298,55 +298,46 @@
                                                                 <div class="h4-search">
                                                                     Fecha Reserva: ' . $scheduledate . '<br>Inicio: <b>@' . substr($scheduletime, 0, 5) . '</b> (24h)
                                                                 </div>
-                                                                <br>
-                                                                <a href="?action=drop&id=' . $appoid . '&title=' . $title . '&doc=' . $docname . '" ><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Cancelar Reserva</font></button></a>
-                                                        </div>
+                                                                <br>';
+                                                                $estado = '';
+                                                                $status_query = $database->query("SELECT appostatus FROM appointment WHERE appoid='$appoid'");
+                                                                $status_row = $status_query->fetch_assoc();
+                                                                $appostatus = isset($status_row['appostatus']) ? strtolower($status_row['appostatus']) : 'pendiente';
+                                                                switch ($appostatus) {
+                                                                    case 'atendida':
+                                                                        $estado = '<div style="background:#b2e0b2;color:#2d6a2d;font-weight:bold;padding:10px 0;border-radius:8px;width:100%;text-align:center;margin-bottom:8px;">Atendida</div>';
+                                                                        break;
+                                                                    case 'cancelada':
+                                                                        $estado = 'Cancelada';
+                                                                        break;
+                                                                    case 'reagendada':
+                                                                        $estado = 'Reagendada';
+                                                                        break;
+                                                                    default:
+                                                                        $estado = ucfirst($appostatus);
+                                                                        break;
+                                                                }
+                                                                if ($appostatus === 'atendida') {
+                                                                    echo $estado;
+                                                                } else {
+                                                                    echo '<div class="h4-search">Estado: ' . $estado . '</div>';
+                                                                }
+                                                                $btns = '';
+                                                                if ($appostatus === 'reagendada' || $appostatus === 'pendiente') {
+                                                                    $btns .= '<a href="?action=drop&id=' . $appoid . '&title=' . urlencode($title) . '&doc=' . urlencode($docname) . '" style="flex:1;"><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Cancelar Reserva</font></button></a>';
+                                                                    $btns .= '<a href="?action=reschedule&id=' . $appoid . '" style="flex:1;"><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Reagendar</font></button></a>';
+                                                                } elseif ($appostatus === 'cancelada') {
+                                                                    $btns .= '<a href="?action=reschedule&id=' . $appoid . '" style="flex:1;"><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Reagendar</font></button></a>';
+                                                                }
+                                                                if ($btns !== '') {
+                                                                    echo '<div style="display:flex;gap:10px;justify-content:center;align-items:center;margin-top:8px;width:100%;">' . $btns . '</div>';
+                                                                }
+                                                                echo '</div>
                                                                 
                                                     </div>
                                                 </td>';
                                             }
                                             echo "</tr>";
-
-                                            // for ( $x=0; $x<$result->num_rows;$x++){
-                                            //     $row=$result->fetch_assoc();
-                                            //     $appoid=$row["appoid"];
-                                            //     $scheduleid=$row["scheduleid"];
-                                            //     $title=$row["title"];
-                                            //     $docname=$row["docname"];
-                                            //     $scheduledate=$row["scheduledate"];
-                                            //     $scheduletime=$row["scheduletime"];
-                                            //     $pname=$row["pname"];
-                                            //     
-                                            //     
-                                            //     echo '<tr >
-                                            //         <td style="font-weight:600;"> &nbsp;'.
-
-                                            //         substr($pname,0,25)
-                                            //         .'</td >
-                                            //         <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
-                                            //         '.$apponum.'
-
-                                            //         </td>
-                                            //         <td>
-                                            //         '.substr($title,0,15).'
-                                            //         </td>
-                                            //         <td style="text-align:center;;">
-                                            //             '.substr($scheduledate,0,10).' @'.substr($scheduletime,0,5).'
-                                            //         </td>
-
-                                            //         <td style="text-align:center;">
-                                            //             '.$appodate.'
-                                            //         </td>
-
-                                            //         <td>
-                                            //         <div style="display:flex;justify-content: center;">
-
-                                            //         <!--<a href="?action=view&id='.$appoid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Ver</font></button></a>
-                                            //        &nbsp;&nbsp;&nbsp;-->
-                                            //        <a href="?action=drop&id='.$appoid.'&name='.$pname.'&session='.$title.'&apponum='.$apponum.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancelar</font></button></a>
-                                            //        &nbsp;&nbsp;&nbsp;</div>
-                                            //         </td>
-                                            //     </tr>';
 
                                         }
                                     }
@@ -520,9 +511,56 @@
             </div>
             </div>
             ';
+        } elseif (isset($_GET['action']) && $_GET['action'] === 'reschedule' && isset($_GET['id'])) {
+            $id = $_GET['id'];
+            // Obtener fecha y hora actuales
+            $res = $database->query("SELECT schedule.scheduledate, schedule.scheduletime FROM appointment INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid WHERE appointment.appoid='$id'");
+            $row = $res->fetch_assoc();
+            $fecha_actual = $row['scheduledate'];
+            $hora_actual = $row['scheduletime'];
+            echo '<div id="popup1" class="overlay">
+        <div class="popup">
+            <center>
+                <h2>Reagendar Cita</h2>
+                <a class="close" href="appointment.php">&times;</a>
+                <div class="content">
+                    <form action="appointment.php" method="POST">
+                        <input type="hidden" name="reschedule_id" value="' . $id . '">
+                        <label>Fecha nueva:</label><br>
+                        <input type="date" name="new_date" class="input-text" value="' . $fecha_actual . '" required><br><br>
+                        <label>Hora nueva:</label><br>
+                        <input type="time" name="new_time" class="input-text" value="' . $hora_actual . '" required><br><br>
+                        <input type="submit" name="reschedule_submit" value="Guardar Cambios" class="btn-primary btn">
+                    </form>
+                </div>
+            </center>
+        </div>
+    </div>';
         }
     }
+    if (isset($_POST['reschedule_submit'])) {
+        $appoid = $_POST['reschedule_id'];
+        $new_date = $_POST['new_date'];
+        $new_time = $_POST['new_time'];
+        // Buscar el scheduleid de la cita
+        $res = $database->query("SELECT scheduleid FROM appointment WHERE appoid='$appoid'");
+        $row = $res->fetch_assoc();
+        $scheduleid = $row['scheduleid'];
+        // Actualizar la fecha y hora en schedule
+        $database->query("UPDATE schedule SET scheduledate='$new_date', scheduletime='$new_time' WHERE scheduleid='$scheduleid'");
+        // Cambiar estado a 'reagendada' y actualizar appodate
+        $database->query("UPDATE appointment SET appostatus='reagendada', appodate='$new_date' WHERE appoid='$appoid'");
+        // Programar cambio a 'pendiente' en 5 minutos usando un EVENT de MySQL
+        $database->query("CREATE EVENT IF NOT EXISTS set_pending_$appoid ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 MINUTE DO UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid' AND appostatus='reagendada';");
+        session_write_close();
+        header('Location: appointment.php');
+        exit();
+    }
 
+    // Al inicio del <body> o antes de mostrar las citas:
+    if (isset($_GET['justRescheduled'])) {
+        echo '<script>if(window.location.search.indexOf("justRescheduled")!==-1){window.location.replace("appointment.php");}</script>';
+    }
     ?>
     </div>
 
