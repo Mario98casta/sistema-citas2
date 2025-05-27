@@ -82,9 +82,11 @@ if (isset($_POST['reschedule_submit'])) {
 <body>
     <?php
 
-    //learn from w3schools.com
 
+
+    if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
     if (isset($_SESSION["user"])) {
         if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'doctor') {
