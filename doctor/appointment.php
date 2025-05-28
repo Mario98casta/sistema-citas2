@@ -26,6 +26,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'reschedule' && isset($_GET['i
     $row = $res->fetch_assoc();
     $fecha_actual = $row['scheduledate'];
     $hora_actual = $row['scheduletime'];
+    $hoy = date('Y-m-d');
     echo '<div id="popup1" class="overlay">
         <div class="popup">
             <center>
@@ -35,7 +36,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'reschedule' && isset($_GET['i
                     <form action="appointment.php" method="POST">
                         <input type="hidden" name="reschedule_id" value="' . $id . '">
                         <label>Fecha nueva:</label><br>
-                        <input type="date" name="new_date" class="input-text" value="' . $fecha_actual . '" required><br><br>
+                        <input type="date" name="new_date" class="input-text" value="' . $fecha_actual . '" min="' . $hoy . '" required><br><br>
                         <label>Hora nueva:</label><br>
                         <input type="time" name="new_time" class="input-text" value="' . $hora_actual . '" required><br><br>
                         <input type="submit" name="reschedule_submit" value="Guardar Cambios" class="btn-primary btn">

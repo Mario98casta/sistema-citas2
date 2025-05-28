@@ -149,7 +149,9 @@
                         <?php
                         date_default_timezone_set('America/Guatemala');
 
-                        $today = date('d-m-y');
+                        $today = date('Y-m-d');
+                        $nextweek = date('Y-m-d', strtotime('+1 week'));
+
                         echo $today;
 
 
@@ -341,8 +343,8 @@
                                 <tbody>
 
                                     <?php
-                                    $nextweek = date("Y-m-d", strtotime("+1 week"));
-                                    $sqlmain = "select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  patient.pid=$userid  and schedule.scheduledate>='$today' order by schedule.scheduledate asc";
+                                    $nextweek = date('Y-m-d', strtotime('+1 week'));
+                                    $sqlmain = "select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  patient.pid=$userid  and schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate asc";
                                     //echo $sqlmain;
                                     $result = $database->query($sqlmain);
 

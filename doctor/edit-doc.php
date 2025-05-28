@@ -22,7 +22,7 @@ if ($_POST) {
 
     if ($password == $cpassword) {
         $error = '3';
-        $result = $database->query("Selecicona Doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
+        $result = $database->query("SELECT doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
         //$resultqq= $database->query("select * from doctor where docid='$id';");
         if ($result->num_rows == 1) {
             $id2 = $result->fetch_assoc()["docid"];
@@ -38,9 +38,9 @@ if ($_POST) {
             //if($resultqq1->num_rows==1){
 
         } else {
-
-            //$sql1="insert into doctor(docemail,docname,docpassword,docnic,doctel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
-            $sql1 = "update doctor set docemail='$email',docname='$name',docpassword='$password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
+            // Encriptar la contraseña antes de guardar
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $sql1 = "update doctor set docemail='$email',docname='$name',docpassword='$hashed_password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
             $database->query($sql1);
 
             $sql1 = "update webuser set email='$email' where email='$oldemail' ;";

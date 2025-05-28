@@ -36,8 +36,10 @@ if ($_POST) {
 
         } else {
 
+            // Encriptar la contraseña antes de guardar
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             //update doctor table
-            $sql1 = "update doctor set docemail='$email',docname='$name',docpassword='$password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
+            $sql1 = "update doctor set docemail='$email',docname='$name',docpassword='$hashed_password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
             $database->query($sql1);
 
             $sql1 = "update webuser set email='$email' where email='$oldemail' ;";

@@ -165,9 +165,8 @@
                         <?php
                         date_default_timezone_set('America/Guatemala');
 
-                        $today = date('d-m-y');
-                        echo $today;
-
+                        $today = date('Y-m-d');
+                        echo date('d-m-y'); // Mostrar en formato legible
 
                         $patientrow = $database->query("select  * from  patient;");
                         $doctorrow = $database->query("select  * from  doctor;");
@@ -319,7 +318,7 @@
                                             <tbody>
 
                                                 <?php
-                                                $nextweek = date("d-m-y", strtotime("+1 week"));
+                                                $nextweek = date("y-m-d", strtotime("+1 week"));
                                                 $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today'  and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
 
                                                 $result = $database->query($sqlmain);
@@ -412,7 +411,7 @@
                                             <tbody>
 
                                                 <?php
-                                                $nextweek = date("d-m-y", strtotime("+1 week"));
+                                                $nextweek = date("y-m-d", strtotime("+1 week"));
                                                 $sqlmain = "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
                                                 $result = $database->query($sqlmain);
 

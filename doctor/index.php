@@ -154,8 +154,8 @@
                         <?php
                         date_default_timezone_set('America/Guatemala');
 
-                        $today = date('d-m-y');
-                        echo $today;
+                        $today = date('Y-m-d');
+                        echo date('d-m-y'); // Mostrar en formato legible
 
 
                         $patientrow = $database->query("select  * from  patient;");
@@ -315,13 +315,12 @@
                                 <tbody>
 
                                     <?php
-                                    $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                    $nextweek = date('Y-m-d', strtotime('+1 week'));
                                     $sqlmain = "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
                                     $result = $database->query($sqlmain);
 
                                     if ($result->num_rows == 0) {
-                                        echo '<tr>
-                                                    <td colspan="4">
+                                        echo '<tr><td colspan="4">
                                                     <br><br><br><br>
                                                     <center>
                                                     <img src="../img/notfound.svg" width="25%">
