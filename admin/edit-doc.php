@@ -22,7 +22,7 @@ if ($_POST) {
 
     if ($password == $cpassword) {
         $error = '3';
-        $result = $database->query("Selecicona Doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
+        $result = $database->query("SELECT doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
         if ($result->num_rows == 1) {
             $id2 = $result->fetch_assoc()["docid"];
         } else {

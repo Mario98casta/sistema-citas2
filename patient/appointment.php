@@ -179,15 +179,6 @@
 
             </tr>
 
-            <!-- <tr>
-                    <td colspan="4" >
-                        <div style="display: flex;margin-top: 40px;">
-                        <div class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49);margin-top: 5px;">Calendario de Sesión</div>
-                        <a href="?action=add-session&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="margin-left:25px;background-image: url('../img/icons/add.svg');">Agregar a Sesión</font></button>
-                        </a>
-                        </div>
-                    </td>
-                </tr> -->
             <tr>
                 <td colspan="4" style="padding-top:10px;width: 100%;">
 
@@ -548,10 +539,12 @@
         $scheduleid = $row['scheduleid'];
         // Actualizar la fecha y hora en schedule
         $database->query("UPDATE schedule SET scheduledate='$new_date', scheduletime='$new_time' WHERE scheduleid='$scheduleid'");
-        // Cambiar estado a 'reagendada' y actualizar appodate
-        $database->query("UPDATE appointment SET appostatus='reagendada', appodate='$new_date' WHERE appoid='$appoid'");
+        // Cambiar estado a 'reagendada' (NO actualizar appodate)
+        $database->query("UPDATE appointment SET appostatus='reagendada' WHERE appoid='$appoid'");
+        // Eliminar el EVENT previo si existe para evitar conflictos
+        $database->query("DROP EVENT IF EXISTS set_pending_$appoid;");
         // Programar cambio a 'pendiente' en 5 minutos usando un EVENT de MySQL
-        $database->query("CREATE EVENT IF NOT EXISTS set_pending_$appoid ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 MINUTE DO UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid' AND appostatus='reagendada';");
+        $database->query("CREATE EVENT set_pending_$appoid ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 MINUTE DO UPDATE appointment SET appostatus='pendiente' WHERE appoid='$appoid' AND appostatus='reagendada';");
         session_write_close();
         header('Location: appointment.php');
         exit();
