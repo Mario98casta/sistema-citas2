@@ -83,9 +83,6 @@ if (isset($_POST['reschedule_submit'])) {
 <body>
     <?php
 
-    //learn from w3schools.com
-
-    session_start();
 
     if (isset($_SESSION["user"])) {
         if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'doctor') {
@@ -213,15 +210,7 @@ if (isset($_POST['reschedule_submit'])) {
 
             </tr>
 
-            <!-- <tr>
-                    <td colspan="4" >
-                        <div style="display: flex;margin-top: 40px;">
-                        <div class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49);margin-top: 5px;">Calendario de Sesión</div>
-                        <a href="?action=add-session&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="margin-left:25px;background-image: url('../img/icons/add.svg');">Agregar a Sesión</font></button>
-                        </a>
-                        </div>
-                    </td>
-                </tr> -->
+            
             <tr>
                 <td colspan="4" style="padding-top:10px;width: 100%;">
 
@@ -409,11 +398,14 @@ if (isset($_POST['reschedule_submit'])) {
                     </button>
                 </a>';
         } else {
-            echo '<a href="?action=attend&id=' . $appoid . '" class="non-style-link">
-                    <button class="btn-primary-soft btn button-icon" style="background:#4f8cff;color:white;min-width:120px;">
-                        <font class="tn-in-text">Atender</font>
-                    </button>
-                </a>';
+            $hoy = date('Y-m-d');
+            if ($scheduledate === $hoy) {
+                echo '<a href="?action=attend&id=' . $appoid . '" class="non-style-link">
+                        <button class="btn-primary-soft btn button-icon" style="background:#4f8cff;color:white;min-width:120px;">
+                            <font class="tn-in-text">Atender</font>
+                        </button>
+                    </a>';
+            }
             echo '<a href="?action=reschedule&id=' . $appoid . '" class="non-style-link">
                     <button class="btn-primary-soft btn button-icon btn-edit" style="background:#ffe066;color:#856404;min-width:120px;">
                         <font class="tn-in-text">Reagendar</font>
