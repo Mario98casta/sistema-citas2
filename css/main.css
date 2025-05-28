@@ -659,6 +659,18 @@ input[type=search]:focus {
     min-height: 18px;
     padding: 4px 6px 4px 24px !important;
   }
+  .logo, .header-logo, img[alt*="logo"], img.logo {
+    max-width: 32px !important;
+    max-height: 32px !important;
+    height: auto !important;
+    width: auto !important;
+    margin: 0 4px !important;
+  }
+  .calendar-icon, img[alt*="calendar"], img[src*="calendar"] {
+    max-width: 24px !important;
+    max-height: 24px !important;
+    height: auto !important;
+  }
 }
 
 @media (max-width: 400px) {
@@ -675,5 +687,14 @@ input[type=search]:focus {
     font-size: 11px !important;
     padding: 4px 4px !important;
     min-width: 60px;
+  }
+  .logo, .header-logo, img[alt*="logo"], img.logo {
+    max-width: 22px !important;
+    max-height: 22px !important;
+  }
+  .calendar-icon, img[alt*="calendar"], img[src*="calendar"] {
+    max-width: 16px !important;
+    max-height: 16px !important;
+    height: auto !important;
   }
 }
