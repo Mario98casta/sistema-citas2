@@ -1,4 +1,3 @@
-
 body{
     margin: 7%;
     background-image: url(../img/bg01.jpg);
@@ -60,4 +59,48 @@ td{
     /*margin-top: 15px;*/
     margin-bottom: 15px;
     width: 100%;
+}
+
+@media (max-width: 600px) {
+  body {
+    margin: 2% !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+  .container {
+    width: 98% !important;
+    min-width: unset;
+    padding: 0 2vw !important;
+  }
+  .header-text {
+    font-size: 18px !important;
+    margin-bottom: 6px;
+  }
+  .sub-text {
+    font-size: 11px !important;
+  }
+  .form-label {
+    font-size: 11px !important;
+  }
+  .login-btn {
+    font-size: 13px !important;
+    padding: 7px 0 !important;
+    min-width: 90px;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-text {
+    font-size: 13px !important;
+  }
+  .sub-text, .form-label {
+    font-size: 9px !important;
+  }
+  .login-btn {
+    font-size: 10px !important;
+    min-width: 60px;
+    padding: 4px 0 !important;
+  }
 }

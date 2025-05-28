@@ -131,3 +131,76 @@ body{
     
     
 }
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    height: auto !important;
+    min-height: 100vh;
+    padding: 0 !important;
+  }
+  .menu {
+    width: 100% !important;
+    min-width: unset;
+    height: auto !important;
+    border-right: none;
+    border-bottom: 1.5px solid #eaeaea;
+    box-shadow: none;
+    margin-bottom: 10px;
+  }
+  .dash-body {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 2vw 30px 2vw !important;
+  }
+  .profile-title, .profile-subtitle {
+    font-size: 13px !important;
+    padding-left: 2% !important;
+  }
+  .header-container {
+    margin-top: 10px;
+    margin-bottom: 2%;
+    height: 120px;
+  }
+  #header-heading {
+    font-size: 18px;
+  }
+  #header-sub-heading {
+    font-size: 11px;
+  }
+  .dashboard-items {
+    padding: 5px 2px !important;
+    margin-bottom: 8px;
+  }
+  .sub-table th, .sub-table td {
+    font-size: 11px !important;
+    padding: 3px 2px !important;
+  }
+  .abc.scroll {
+    max-height: 120px;
+    padding: 0 2px;
+  }
+  .btn-primary, .btn-primary-soft, .login-btn {
+    width: 100% !important;
+    min-width: 90px;
+    font-size: 13px !important;
+    padding: 7px 0 !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .profile-title, .profile-subtitle {
+    font-size: 10px !important;
+  }
+  #header-heading {
+    font-size: 13px;
+  }
+  #header-sub-heading {
+    font-size: 9px;
+  }
+  .btn-primary, .btn-primary-soft, .login-btn {
+    font-size: 10px !important;
+    min-width: 60px;
+    padding: 4px 0 !important;
+  }
+}

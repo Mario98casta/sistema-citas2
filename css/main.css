@@ -589,3 +589,91 @@ input[type=search]:focus {
   background-repeat: no-repeat;
   transition: 0.5s;
 }
+
+@media (max-width: 600px) {
+  .dashboard-items {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    padding: 8px 2px !important;
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+  .dashboard-icons, .dashboard-icons-setting {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 8px;
+    margin-right: 0;
+    min-width: 28px;
+    min-height: 28px;
+    max-width: 32px;
+    max-height: 32px;
+    background-size: 24px 24px !important;
+  }
+  .h1-dashboard {
+    font-size: 16px;
+    padding-top: 8px;
+  }
+  .h3-dashboard {
+    font-size: 12px;
+  }
+  .menu-btn, .btn, .btn-primary, .btn-primary-soft, .btn-label {
+    font-size: 13px !important;
+    padding: 6px 8px !important;
+    min-width: 80px;
+    width: 100% !important;
+  }
+  .menu-text {
+    font-size: 13px;
+    padding-left: 10%;
+  }
+  .menu-icon-dashbord, .menu-icon-doctor, .menu-icon-schedule, .menu-icon-appoinment, .menu-icon-patient, .menu-icon-settings, .menu-icon-session, .menu-icon-home {
+    min-width: 24px;
+    min-height: 24px;
+    background-size: 20px 20px !important;
+  }
+  .search-items {
+    padding: 8px 2px;
+    margin: 4px 0;
+    width: 100%;
+    font-size: 12px;
+  }
+  .sub-table, .filter-container, .dashbord-tables {
+    font-size: 11px;
+    width: 100% !important;
+    min-width: 220px;
+  }
+  .abc {
+    height: 180px !important;
+    max-height: 200px;
+  }
+  .h1-search {
+    font-size: 15px;
+  }
+  .h3-search, .h4-search {
+    font-size: 11px;
+  }
+  .btn-icon-back, .btn-edit, .btn-view, .btn-delete, .btn-filter {
+    background-size: 18px 18px !important;
+    min-width: 18px;
+    min-height: 18px;
+    padding: 4px 6px 4px 24px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .dashboard-icons, .dashboard-icons-setting {
+    min-width: 18px;
+    min-height: 18px;
+    background-size: 16px 16px !important;
+  }
+  .menu-text {
+    font-size: 10px;
+    padding-left: 2%;
+  }
+  .btn, .btn-primary, .btn-primary-soft, .btn-label {
+    font-size: 11px !important;
+    padding: 4px 4px !important;
+    min-width: 60px;
+  }
+}

@@ -176,6 +176,26 @@
 }
 
 @media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    height: auto !important;
+    min-height: 100vh;
+    padding: 0 !important;
+  }
+  .menu {
+    width: 100% !important;
+    min-width: unset;
+    height: auto !important;
+    border-right: none;
+    border-bottom: 1.5px solid #eaeaea;
+    box-shadow: none;
+    margin-bottom: 10px;
+  }
+  .dash-body {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 2vw 30px 2vw !important;
+  }
   .profile-title, .profile-subtitle {
     font-size: 13px !important;
     padding-left: 2% !important;
@@ -195,24 +215,25 @@
     max-height: 160px;
     padding: 0 2px;
   }
-  .menu {
-    font-size: 14px !important;
-  }
   .btn-primary, .btn-primary-soft, .login-btn {
+    width: 100% !important;
+    min-width: 90px;
     font-size: 13px !important;
     padding: 7px 0 !important;
-    min-width: 90px;
-    width: 100% !important;
   }
 }
 
-@media (max-width: 480px) {
-  .sub-table {
-    min-width: 260px;
-    font-size: 11px;
+@media (max-width: 400px) {
+  .profile-title, .profile-subtitle {
+    font-size: 10px !important;
   }
-  .abc.scroll {
-    max-height: 120px;
+  .header-text, .heading-main12, .heading-sub12 {
+    font-size: 11px !important;
+  }
+  .btn-primary, .btn-primary-soft, .login-btn {
+    font-size: 10px !important;
+    min-width: 60px;
+    padding: 4px 0 !important;
   }
 }
 
