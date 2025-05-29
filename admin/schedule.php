@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/animations.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
-    <link rel="icon" type="image/png" sizes="16x16" href="../img/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/user.png">
 
     <title>Calendario</title>
     <style>
