@@ -12,15 +12,12 @@
 
     <title>Acceder</title>
 
-
+   
 
 </head>
 
 <body>
     <?php
-
-    //learn from w3schools.com
-    //Unset all the server side variables
 
     session_start();
 
@@ -122,69 +119,33 @@
 
     <center>
         <div class="container">
-            <table border="0" style="margin: 0;padding: 0;width: 60%;">
-                <tr>
-                    <td>
-                        <p class="header-text">Bienvenido a Nuestras Clinicas medicas</p>
-                    </td>
-                </tr>
-                <div class="form-body">
-                    <tr>
-                        <td>
-                            <p class="sub-text">Inicia sesión con tus datos para continuar</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <form action="" method="POST">
-                            <td class="label-td">
-                                <label for="useremail" class="form-label">Correo Electrónico: </label>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td class="label-td">
-                            <input type="email" name="useremail" class="input-text" placeholder="Correo Electrónico" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label-td">
-                            <label for="userpassword" class="form-label">Contraseña: </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="label-td">
-                            <input type="Password" name="userpassword" class="input-text" placeholder="Contraseña" required>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td><br>
-                            <?php echo $error ?>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <input type="submit" value="Acceder" class="login-btn btn-primary btn">
-                        </td>
-                    </tr>
-                </div>
-                <tr>
-                    <td>
+            <p class="header-text">Bienvenido a Nuestras Clinicas medicas</p>
+            <div class="form-body">
+                <p class="sub-text">Inicia sesión con tus datos para continuar</p>
+                <form action="" method="POST">
+                    <div class="label-td">
+                        <label for="useremail" class="form-label">Correo Electrónico: </label>
+                        <input type="email" name="useremail" class="input-text" placeholder="Correo Electrónico" required>
+                    </div>
+                    <div class="label-td">
+                        <label for="userpassword" class="form-label">Contraseña: </label>
+                        <input type="Password" name="userpassword" class="input-text" placeholder="Contraseña" required>
+                    </div>
+                    <div class="label-td">
                         <br>
-                        <label for="" class="sub-text" style="font-weight: 280;">Aún no tienes cuenta&#63 </label>
-                        <a href="signup.php" class="hover-link1 non-style-link">Regístrate</a>
-                        <br><br><br>
-                    </td>
-                </tr>
-
-
-
-
+                        <?php echo $error ?>
+                    </div>
+                    <div class="label-td">
+                        <input type="submit" value="Acceder" class="login-btn btn-primary btn">
+                    </div>
                 </form>
-            </table>
-
+                <div class="label-td">
+                    <br>
+                    <label for="" class="sub-text" style="font-weight: 280;">Aún no tienes cuenta&#63 </label>
+                    <a href="signup.php" class="hover-link1 non-style-link">Regístrate</a>
+                    <br><br><br>
+                </div>
+            </div>
         </div>
     </center>
 </body>
